@@ -1,0 +1,192 @@
+@prefix rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs:<http://www.w3.org/2000/01/rdf-schema#>.
+
+@prefix classes:<URN:classes:>.
+@prefix processes:<URN:processes:>.
+@prefix controls:<URN:controls:>.
+@prefix meсhanisms:<URN:meсhanisms:>.
+@prefix materials:<URN:materials:>.
+
+@prefix predicat:<URN:predicat>.
+
+processes:predictionParameters		rdf:type		classes:Process.
+processes:predictionParameters		rdfs:label		"Prediction parameters of the object".
+processes:predictionParameters		rdfs:comment	"Prediction parameters of the object".
+
+processes:readingAndProcessing		rdf:type		classes:Process.
+processes:readingAndProcessing		rdfs:label		"Reading and processing data".
+processes:readingAndProcessing		rdfs:comment	"At this stage, the data is read and the blanks are filled in".
+
+processes:timeSeriesPrediction		rdf:type		classes:Process.
+processes:timeSeriesPrediction		rdfs:label		"Time series prediction".
+processes:timeSeriesPrediction		rdfs:comment	"At this stage, the time series are predicted using neural network".
+
+processes:resultPresentation		rdf:type		classes:Process.
+processes:resultPresentation		rdfs:label		"Presentation of results".
+processes:resultPresentation		rdfs:comment	"Presentation of predicted values as a graph".
+
+processes:readingFromDB				rdf:type		classes:Process.
+processes:readingFromDB				rdfs:label		"Reading from database".
+processes:readingFromDB				rdfs:comment	"Reading data about object from database".
+
+processes:fillingBlanks				rdf:type		classes:Process.
+processes:fillingBlanks				rdfs:label		"Filling in the blanks".
+processes:fillingBlanks				rdfs:comment	"At this stage, blanks are searched for and filled in".
+
+processes:convertingToJSON			rdf:type		classes:Process.
+processes:convertingToJSON			rdfs:label		"Converting data to JSON file".
+processes:convertingToJSON			rdfs:comment	"At this stage, data about time seies is converted to JSON file".
+
+processes:sendingJSON				rdf:type		classes:Process.
+processes:sendingJSON				rdfs:label		"Sending JSON file to frontend".
+processes:sendingJSON				rdfs:comment	"At this stage, JSON file is sent to frontend program".
+
+processes:displayingData			rdf:type		classes:Process.
+processes:displayingData			rdfs:label		"Displaying data".
+processes:displayingData			rdfs:comment	"At this stage, the data is displayed as a graph".
+
+processes:searchingNulls			rdf:type		classes:Process.
+processes:searchingNulls			rdfs:label		"Search for null values".
+processes:searchingNulls			rdfs:comment	"Search for null values in data from database".
+
+processes:selectMLMethod			rdf:type		classes:Process.
+processes:selectMLMethod			rdfs:label		"Selecting a method of ML".
+processes:selectMLMethod			rdfs:comment	"Selecting a method of ML using data about number of null values in data".
+
+processes:applicationMethod			rdf:type		classes:Process.
+processes:applicationMethod			rdfs:label		"Application a method of ML".
+processes:applicationMethod			rdfs:comment	"Application a method of ML for filling the blanks in data".
+
+processes:convertingFromJSON		rdf:type		classes:Process.
+processes:convertingFromJSON		rdfs:label		"Converting JSON file to data".
+processes:convertingFromJSON		rdfs:comment	"At this stage, JSON file is converted to lists of values".
+
+processes:addingToGraph				rdf:type		classes:Process.
+processes:addingToGraph				rdfs:label		"Adding data to a graph".
+processes:addingToGraph				rdfs:comment	"At this stage, values are added to a graph".
+
+controls:accuracyRequirements		rdf:type		classes:Control.
+controls:accuracyRequirements		rdfs:label		"Accuracy requirements".
+
+controls:perfomanceRequirements		rdf:type		classes:Control.
+controls:perfomanceRequirements		rdfs:label		"Perfomance requirements".
+
+controls:nonFunctionalRequirements	rdf:type		classes:Control.
+controls:nonFunctionalRequirements	rdfs:label		"Non-functional requirements".
+
+meсhanisms:database					rdf:type		classes:Mechanism.
+meсhanisms:database					rdfs:label		"Database".
+
+meсhanisms:server					rdf:type		classes:Mechanism.
+meсhanisms:server					rdfs:label		"Server".
+
+meсhanisms:ML						rdf:type		classes:Mechanism.
+meсhanisms:ML						rdfs:label		"Machine learning methods".
+
+meсhanisms:NN						rdf:type		classes:Mechanism.
+meсhanisms:NN						rdfs:label		"Neural network".
+
+meсhanisms:UI						rdf:type		classes:Mechanism.
+meсhanisms:UI						rdfs:label		"User Interface".
+
+materials:dataAboutState			rdf:type		classes:Material.
+materials:dataAboutState			rdfs:label		"Data about the state of the object".
+
+materials:graphOfParameters			rdf:type		classes:Material.
+materials:graphOfParameters			rdfs:label		"Graph of parameters changes".
+
+materials:processedData				rdf:type		classes:Material.
+materials:processedData				rdfs:label		"Processed data".
+
+materials:rawTimeSeries				rdf:type		classes:Material.
+materials:rawTimeSeries				rdfs:label		"Raw values of the time series".
+
+materials:rawData					rdf:type		classes:Material.
+materials:rawData					rdfs:label		"Raw data".
+
+materials:JSONFile					rdf:type		classes:Material.
+materials:JSONFile					rdfs:label		"JSON file".
+
+materials:indexes					rdf:type		classes:Material.
+materials:indexes					rdfs:label		"Indexes of null values".
+
+materials:method					rdf:type		classes:Material.
+materials:method					rdfs:label		"Method of the machine learning".
+
+materials:data						rdf:type		classes:Material.
+materials:data						rdfs:label		"Data from JSON file".
+
+processes:predictionParameters		predicat:include		processes:readingAndProcessing, processes:timeSeriesPrediction, processes:resultPresentation.
+processes:predictionParameters		predicat:hasControl		controls:accuracyRequirements, controls:perfomanceRequirements, controls:nonFunctionalRequirements.
+processes:predictionParameters		predicat:hasMechanism	meсhanisms:database, meсhanisms:server, meсhanisms:ML, meсhanisms:NN, meсhanisms:UI.
+processes:predictionParameters		predicat:hasInput		materials:dataAboutState.
+processes:predictionParameters		predicat:hasOutput		materials:graphOfParameters.
+
+processes:readingAndProcessing		predicat:include		processes:readingFromDB, processes:fillingBlanks.
+processes:readingAndProcessing		predicat:hasControl		controls:accuracyRequirements, controls:perfomanceRequirements.
+processes:readingAndProcessing		predicat:hasMechanism	meсhanisms:database, meсhanisms:server, meсhanisms:ML.
+processes:readingAndProcessing		predicat:hasInput		materials:dataAboutState.
+processes:readingAndProcessing		predicat:hasOutput		materials:processedData.
+
+processes:timeSeriesPrediction		predicat:hasControl		controls:accuracyRequirements, controls:perfomanceRequirements.
+processes:timeSeriesPrediction		predicat:hasMechanism	meсhanisms:server, meсhanisms:NN.
+processes:timeSeriesPrediction		predicat:hasInput		materials:processedData.
+processes:timeSeriesPrediction		predicat:hasOutput		materials:rawTimeSeries.
+
+processes:resultPresentation		predicat:include		processes:convertingToJSON, processes:sendingJSON, processes:displayingData.
+processes:resultPresentation		predicat:hasControl		controls:nonFunctionalRequirements, controls:perfomanceRequirements.
+processes:resultPresentation		predicat:hasMechanism	meсhanisms:server, meсhanisms:UI.
+processes:resultPresentation		predicat:hasInput		materials:rawTimeSeries.
+processes:resultPresentation		predicat:hasOutput		materials:graphOfParameters.
+
+processes:readingFromDB				predicat:hasControl		controls:perfomanceRequirements.
+processes:readingFromDB				predicat:hasMechanism	meсhanisms:database, meсhanisms:server.
+processes:readingFromDB				predicat:hasInput		materials:dataAboutState.
+processes:readingFromDB				predicat:hasOutput		materials:rawData.
+
+processes:fillingBlanks				predicat:include		processes:searchingNulls, processes:selectMLMethod, processes:applicationMethod.
+processes:fillingBlanks				predicat:hasControl		controls:perfomanceRequirements, controls:accuracyRequirements.
+processes:fillingBlanks				predicat:hasMechanism	meсhanisms:server, meсhanisms:ML.
+processes:fillingBlanks				predicat:hasInput		materials:rawData.
+processes:fillingBlanks				predicat:hasOutput		materials:processedData.
+
+processes:convertingToJSON			predicat:hasControl		controls:perfomanceRequirements.
+processes:convertingToJSON			predicat:hasMechanism	meсhanisms:server.
+processes:convertingToJSON			predicat:hasInput		materials:rawTimeSeries.
+processes:convertingToJSON			predicat:hasOutput		materials:JSONFile.
+
+processes:sendingJSON				predicat:hasControl		controls:perfomanceRequirements.
+processes:sendingJSON				predicat:hasMechanism	meсhanisms:server.
+processes:sendingJSON				predicat:hasInput		materials:JSONFile.
+processes:sendingJSON				predicat:hasOutput		materials:JSONFile.
+
+processes:displayingData			predicat:include		processes:convertingFromJSON, processes:addingToGraph.
+processes:displayingData			predicat:hasControl		controls:perfomanceRequirements, controls:nonFunctionalRequirements.
+processes:displayingData			predicat:hasMechanism	meсhanisms:server, meсhanisms:UI.
+processes:displayingData			predicat:hasInput		materials:JSONFile.
+processes:displayingData			predicat:hasOutput		materials:graphOfParameters.
+
+processes:searchingNulls			predicat:hasControl		controls:perfomanceRequirements, controls:accuracyRequirements.
+processes:searchingNulls			predicat:hasMechanism	meсhanisms:server.
+processes:searchingNulls			predicat:hasInput		materials:rawData.
+processes:searchingNulls			predicat:hasOutput		materials:rawData, materials:indexes.
+
+processes:selectMLMethod			predicat:hasControl		controls:perfomanceRequirements, controls:accuracyRequirements.
+processes:selectMLMethod			predicat:hasMechanism	meсhanisms:server.
+processes:selectMLMethod			predicat:hasInput		materials:rawData, materials:indexes.
+processes:selectMLMethod			predicat:hasOutput		materials:rawData, materials:indexes, materials:method.
+
+processes:applicationMethod			predicat:hasControl		controls:perfomanceRequirements, controls:accuracyRequirements.
+processes:applicationMethod			predicat:hasMechanism	meсhanisms:server, meсhanisms:ML.
+processes:applicationMethod			predicat:hasInput		materials:rawData, materials:indexes, materials:method.
+processes:applicationMethod			predicat:hasOutput		materials:processedData.
+
+processes:convertingFromJSON		predicat:hasControl		controls:perfomanceRequirements.
+processes:convertingFromJSON		predicat:hasMechanism	meсhanisms:server.
+processes:convertingFromJSON		predicat:hasInput		materials:JSONFile.
+processes:convertingFromJSON		predicat:hasOutput		materials:data.
+
+processes:addingToGraph				predicat:hasControl		controls:perfomanceRequirements, controls:nonFunctionalRequirements.
+processes:addingToGraph				predicat:hasMechanism	meсhanisms:server, meсhanisms:UI.
+processes:addingToGraph				predicat:hasInput		materials:data.
+processes:addingToGraph				predicat:hasOutput		materials:graphOfParameters.
