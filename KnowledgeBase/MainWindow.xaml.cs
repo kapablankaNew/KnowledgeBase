@@ -26,7 +26,6 @@ namespace KnowledgeBase
             dAO = new DAO();
             dAO.loadData("../../resources/knowledgeBase.n3");
             List<Process> highLevel = dAO.getHighLevel();
-            List<Process> processes = dAO.getProcesses();
             foreach (Process process in highLevel)
             {
                 TreeViewItem tree = getTree(process);
