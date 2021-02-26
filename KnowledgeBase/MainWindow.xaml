@@ -13,8 +13,11 @@
 			<ColumnDefinition Width="0*"/>
 		</Grid.ColumnDefinitions>
 		<TreeView x:Name="KnowlegdeTree" HorizontalAlignment="Left" 
-				  Height="399" Margin="10,10,0,0" 
+				  Height="238" Margin="10,10,0,0" 
 				  VerticalAlignment="Top" Width="244"/>
-		<TextBox x:Name="TextBoxInfo" HorizontalAlignment="Left" Height="399" Margin="361,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="423"/>
+		<TextBox x:Name="TextBoxInfo" HorizontalAlignment="Left" 
+				 Height="146" Margin="10,253,0,0" 
+				 TextWrapping="Wrap" VerticalAlignment="Top" 
+				 Width="244"/>
 	</Grid>
 </Window>

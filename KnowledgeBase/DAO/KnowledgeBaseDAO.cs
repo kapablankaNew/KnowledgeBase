@@ -11,14 +11,14 @@ namespace KnowledgeBase
 {
     //special class for getting data from the knowledge base
     //this class is abstraction layer between the program and the knowledge base
-    public class DAO
+    public class KnowledgeBaseDAO
     {
         //object containing data from the knowledge base
         private Graph knowledgeBase { get; set; } 
         private Notation3Parser parser { get; set; }
         private List<Process> allProcesses { get; set; }
 
-        public DAO()
+        public KnowledgeBaseDAO()
         {
             knowledgeBase = new Graph();
             parser = new Notation3Parser();

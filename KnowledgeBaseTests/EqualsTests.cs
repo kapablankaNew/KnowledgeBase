@@ -14,7 +14,7 @@ namespace KnowledgeBase.Tests
         [TestMethod()]
         public void EqualControlTest()
         {
-            DAO dAO = new DAO();
+            KnowledgeBaseDAO dAO = new KnowledgeBaseDAO();
             dAO.loadData("../../../KnowledgeBase/resources/knowledgeBase.n3");
             List<Control> controlsFirst = dAO.getControls();
             List<Control> controlsSecond = dAO.getControls();
@@ -28,7 +28,7 @@ namespace KnowledgeBase.Tests
         [TestMethod()]
         public void EqualMaterialTest()
         {
-            DAO dAO = new DAO();
+            KnowledgeBaseDAO dAO = new KnowledgeBaseDAO();
             dAO.loadData("../../../KnowledgeBase/resources/knowledgeBase.n3");
             List<Material> materialsFirst = dAO.getMaterials();
             List<Material> materialsSecond = dAO.getMaterials();
@@ -42,7 +42,7 @@ namespace KnowledgeBase.Tests
         [TestMethod()]
         public void EqualMechanismTest()
         {
-            DAO dAO = new DAO();
+            KnowledgeBaseDAO dAO = new KnowledgeBaseDAO();
             dAO.loadData("../../../KnowledgeBase/resources/knowledgeBase.n3");
             List<Mechanism> mechanismsFirst = dAO.getMechanisms();
             List<Mechanism> mechanismsSecond = dAO.getMechanisms();

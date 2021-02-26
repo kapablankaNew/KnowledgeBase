@@ -13,7 +13,7 @@ namespace KnowledgeBaseTests
         [ExpectedException(typeof(ArgumentException))]
         public void TestAddControl()
         {
-            DAO dAO = new DAO();
+            KnowledgeBaseDAO dAO = new KnowledgeBaseDAO();
             dAO.loadData("../../../KnowledgeBase/resources/knowledgeBase.n3");
             List<Control> controlsFirst = dAO.getControls();
             List<Control> controlsSecond = dAO.getControls();
@@ -30,7 +30,7 @@ namespace KnowledgeBaseTests
         [ExpectedException(typeof(ArgumentException))]
         public void TestAddMechanism()
         {
-            DAO dAO = new DAO();
+            KnowledgeBaseDAO dAO = new KnowledgeBaseDAO();
             dAO.loadData("../../../KnowledgeBase/resources/knowledgeBase.n3");
             List<Mechanism> mechanismsFirst = dAO.getMechanisms();
             List<Mechanism> mechanismsSecond = dAO.getMechanisms();
@@ -47,7 +47,7 @@ namespace KnowledgeBaseTests
         [ExpectedException(typeof(ArgumentException))]
         public void TestAddInput()
         {
-            DAO dAO = new DAO();
+            KnowledgeBaseDAO dAO = new KnowledgeBaseDAO();
             dAO.loadData("../../../KnowledgeBase/resources/knowledgeBase.n3");
             List<Material> materialsFirst = dAO.getMaterials();
             List<Material> materialsSecond = dAO.getMaterials();
@@ -64,7 +64,7 @@ namespace KnowledgeBaseTests
         [ExpectedException(typeof(ArgumentException))]
         public void TestAddOutput()
         {
-            DAO dAO = new DAO();
+            KnowledgeBaseDAO dAO = new KnowledgeBaseDAO();
             dAO.loadData("../../../KnowledgeBase/resources/knowledgeBase.n3");
             List<Material> materialsFirst = dAO.getMaterials();
             List<Material> materialsSecond = dAO.getMaterials();
@@ -80,7 +80,7 @@ namespace KnowledgeBaseTests
         [TestMethod]
         public void TestAddInputOutputPositive()
         {
-            DAO dAO = new DAO();
+            KnowledgeBaseDAO dAO = new KnowledgeBaseDAO();
             dAO.loadData("../../../KnowledgeBase/resources/knowledgeBase.n3");
             List<Material> materialsFirst = dAO.getMaterials();
             List<Process> processes = dAO.getProcesses();

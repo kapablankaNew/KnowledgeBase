@@ -17,13 +17,13 @@ namespace KnowledgeBase
 {
     public partial class MainWindow : Window
     {
-        private DAO dAO { get; set; }
+        private KnowledgeBaseDAO dAO { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
 
-            dAO = new DAO();
+            dAO = new KnowledgeBaseDAO();
             dAO.loadData("../../resources/knowledgeBase.n3");
             List<Process> highLevel = dAO.getHighLevel();
             foreach (Process process in highLevel)
