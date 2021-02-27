@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,7 +23,6 @@ namespace KnowledgeBase
         public MainWindow()
         {
             InitializeComponent();
-
             dAO = new KnowledgeBaseDAO();
             dAO.loadData("../../resources/knowledgeBase.n3");
             List<Process> highLevel = dAO.getHighLevel();
@@ -54,6 +54,31 @@ namespace KnowledgeBase
             result.Header = process;
             result.Selected += TreeViewItem_Selected;
             return result;
+        }
+
+        private void buttonGetData_Click(object sender, RoutedEventArgs e)
+        {
+            Dictionary<DateTime, double> data = new Dictionary<DateTime, double>();
+            data.Add(DateTime.Now, 1.0);
+            Thread.Sleep(100);
+            data.Add(DateTime.Now, 1.0);
+            Thread.Sleep(100);
+            data.Add(DateTime.Now, 1.0);
+            Thread.Sleep(100);
+            data.Add(DateTime.Now, 1.0);
+            DataGridSensors_fill(data);
+        }
+
+        private void DataGridSensors_fill(Dictionary<DateTime, double> data)
+        {
+            DataGridSensors.Columns.Clear();
+            DataGridSensors.ItemsSource = data;
+        }
+
+
+        private void DataGridSensors_Loaded(object sender, RoutedEventArgs e)
+        {
+            DataGridSensors.Columns.Clear();
         }
     }
 }
