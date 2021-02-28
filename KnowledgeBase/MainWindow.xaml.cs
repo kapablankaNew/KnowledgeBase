@@ -66,28 +66,31 @@ namespace KnowledgeBase
             if (Picker_From.Value == null || Picker_To.Value == null)
             {
                 MessageBox.Show("Please, enter correct date values");
+                return;
             }
-            else
+            DateTime from = (DateTime)Picker_From.Value;
+            DateTime to = (DateTime)Picker_To.Value;
+            if (from > to)
             {
-                DateTime from = (DateTime)Picker_From.Value;
-                DateTime to = (DateTime)Picker_To.Value;
-                if (from > to)
-                {
-                    MessageBox.Show("Value 'from' must be less or equals than 'to'");
-                }
-                else
-                {
-                    MessageBox.Show(from.ToString());
-                    List<ObjectState> states = dataBaseDAO.getDataForTimeInterval(from, to);
-                    DataGridSensors_fill(states);
-                }
+                MessageBox.Show("Value 'from' must be less or equals than 'to'");
+                return;
             }
+            MessageBox.Show(from.ToString());
+            List<ObjectState> states = dataBaseDAO.getDataForTimeInterval(from, to);
+            Dictionary<DateTime, double> values = new Dictionary<DateTime, double>();
+            foreach (var state in states)
+            {
+                values[state.measureTime] = state.Tnv;
+            }
+            DataGridSensors_fill(values, Parameter.Tnv);
         }
 
-        private void DataGridSensors_fill(Dictionary<DateTime, double> data)
+        private void DataGridSensors_fill(Dictionary<DateTime, double> data, Parameter param)
         {
             DataGridSensors.Columns.Clear();
             DataGridSensors.ItemsSource = data;
+            DataGridSensors.Columns[0].Header = "Measure time";
+            DataGridSensors.Columns[1].Header = param.ToString();
         }
 
         private void DataGridSensors_fill(List<ObjectState> states)

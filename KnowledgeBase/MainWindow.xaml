@@ -23,15 +23,15 @@
 		<Button x:Name="buttonGetData" 
 				Content="Get data from sensors" 
 				HorizontalAlignment="Left" 
-				Margin="340,374,0,0" VerticalAlignment="Top" 
+				Margin="566,121,0,0" VerticalAlignment="Top" 
 				Width="202" FontSize="16" 
 				Click="buttonGetData_Click"/>
 		<DataGrid x:Name="DataGridSensors" 
 				  HorizontalAlignment="Left" Height="238" 
 				  Margin="259,10,0,0" VerticalAlignment="Top" 
-				  Width="525" Loaded="DataGridSensors_Loaded"
+				  Width="210" Loaded="DataGridSensors_Loaded"
 				  AutoGenerateColumns="True"/>
-		<xctk:DateTimePicker x:Name="Picker_From" HorizontalAlignment="Left" Margin="359,292,0,0" 
+		<xctk:DateTimePicker x:Name="Picker_From" HorizontalAlignment="Left" Margin="570,46,0,0" 
 							 VerticalAlignment="Top" Height="28" Width="198" 
 							 RenderTransformOrigin="0.5,0.5">
 			<xctk:DateTimePicker.RenderTransform>
@@ -43,7 +43,7 @@
 				</TransformGroup>
 			</xctk:DateTimePicker.RenderTransform>
 		</xctk:DateTimePicker>
-		<xctk:DateTimePicker x:Name="Picker_To" HorizontalAlignment="Left" Margin="359,326,0,0" 
+		<xctk:DateTimePicker x:Name="Picker_To" HorizontalAlignment="Left" Margin="571,82,0,0" 
 							 VerticalAlignment="Top" Height="28" Width="198" 
 							 RenderTransformOrigin="0.5,0.5">
 			<xctk:DateTimePicker.RenderTransform>
@@ -55,11 +55,11 @@
 				</TransformGroup>
 			</xctk:DateTimePicker.RenderTransform>
 		</xctk:DateTimePicker>
-		<Label Content="From" HorizontalAlignment="Left" Margin="280,292,0,0" VerticalAlignment="Top" FontSize="16"/>
-		<Label Content="To" HorizontalAlignment="Left" Margin="290,326,0,0" VerticalAlignment="Top" FontSize="16"/>
-		<Label Content="Parameter" HorizontalAlignment="Left" Margin="263,255,0,0" VerticalAlignment="Top" FontSize="16"/>
+		<Label Content="From" HorizontalAlignment="Left" Margin="501,41,0,0" VerticalAlignment="Top" FontSize="16"/>
+		<Label Content="To" HorizontalAlignment="Left" Margin="513,77,0,0" VerticalAlignment="Top" FontSize="16"/>
+		<Label Content="Parameter" HorizontalAlignment="Left" Margin="484,10,0,0" VerticalAlignment="Top" FontSize="16"/>
 		<ComboBox x:Name="ComboBoxParameter" 
-				  HorizontalAlignment="Left" Margin="360,255,0,0" 
+				  HorizontalAlignment="Left" Margin="571,10,0,0" 
 				  VerticalAlignment="Top" Width="197" Height="31" 
 				  FontSize="16">
 			<TextBlock>Tnv</TextBlock>

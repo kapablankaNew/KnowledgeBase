@@ -140,6 +140,7 @@
     <Compile Include="Entities\Material.cs" />
     <Compile Include="Entities\Mechanism.cs" />
     <Compile Include="Entities\Process.cs" />
+    <Compile Include="Parameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
