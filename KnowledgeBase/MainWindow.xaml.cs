@@ -63,8 +63,25 @@ namespace KnowledgeBase
 
         private void buttonGetData_Click(object sender, RoutedEventArgs e)
         {
-            List<ObjectState> states = dataBaseDAO.getAllData();
-            DataGridSensors_fill(states);
+            if (Picker_From.Value == null || Picker_To.Value == null)
+            {
+                MessageBox.Show("Please, enter correct date values");
+            }
+            else
+            {
+                DateTime from = (DateTime)Picker_From.Value;
+                DateTime to = (DateTime)Picker_To.Value;
+                if (from > to)
+                {
+                    MessageBox.Show("Value 'from' must be less or equals than 'to'");
+                }
+                else
+                {
+                    MessageBox.Show(from.ToString());
+                    List<ObjectState> states = dataBaseDAO.getDataForTimeInterval(from, to);
+                    DataGridSensors_fill(states);
+                }
+            }
         }
 
         private void DataGridSensors_fill(Dictionary<DateTime, double> data)
