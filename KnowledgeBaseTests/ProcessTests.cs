@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using KnowledgeBase;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using VDS.RDF;
 
 namespace KnowledgeBaseTests
 {

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using KnowledgeBase.DAO;
+using KnowledgeBase.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,14 +20,17 @@ namespace KnowledgeBase
 {
     public partial class MainWindow : Window
     {
-        private KnowledgeBaseDAO dAO { get; set; }
+        private KnowledgeBaseDAO knowledgeBaseDAO { get; set; }
+
+        private DataBaseDAO dataBaseDAO { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
-            dAO = new KnowledgeBaseDAO();
-            dAO.loadData("../../resources/knowledgeBase.n3");
-            List<Process> highLevel = dAO.getHighLevel();
+            knowledgeBaseDAO = new KnowledgeBaseDAO();
+            knowledgeBaseDAO.loadData("../../resources/knowledgeBase.n3");
+            dataBaseDAO = new DataBaseDAO();
+            List<Process> highLevel = knowledgeBaseDAO.getHighLevel();
             foreach (Process process in highLevel)
             {
                 TreeViewItem tree = getTree(process);
@@ -46,7 +51,7 @@ namespace KnowledgeBase
         private TreeViewItem getTree(Process process)
         {
             TreeViewItem result = new TreeViewItem();
-            List<Process> children = dAO.getChildren(process);
+            List<Process> children = knowledgeBaseDAO.getChildren(process);
             foreach (Process proc in children)
             {
                 result.Items.Add(getTree(proc));
@@ -58,15 +63,8 @@ namespace KnowledgeBase
 
         private void buttonGetData_Click(object sender, RoutedEventArgs e)
         {
-            Dictionary<DateTime, double> data = new Dictionary<DateTime, double>();
-            data.Add(DateTime.Now, 1.0);
-            Thread.Sleep(100);
-            data.Add(DateTime.Now, 1.0);
-            Thread.Sleep(100);
-            data.Add(DateTime.Now, 1.0);
-            Thread.Sleep(100);
-            data.Add(DateTime.Now, 1.0);
-            DataGridSensors_fill(data);
+            List<ObjectState> states = dataBaseDAO.getAllData();
+            DataGridSensors_fill(states);
         }
 
         private void DataGridSensors_fill(Dictionary<DateTime, double> data)
@@ -75,6 +73,11 @@ namespace KnowledgeBase
             DataGridSensors.ItemsSource = data;
         }
 
+        private void DataGridSensors_fill(List<ObjectState> states)
+        {
+            DataGridSensors.Columns.Clear();
+            DataGridSensors.ItemsSource = states;
+        }
 
         private void DataGridSensors_Loaded(object sender, RoutedEventArgs e)
         {
