@@ -1,4 +1,5 @@
 ﻿using KnowledgeBase.DAO;
+using KnowledgeBase.DTO;
 using KnowledgeBase.Entities;
 using Npgsql;
 using System;
@@ -109,7 +110,9 @@ namespace KnowledgeBase
             {
                 values[state.measureTime] = state.getParameter(param);
             }
-            DataGridSensors_fill(values, param);
+            //DataGridSensors_fill(values, param);
+            List<ObjectStateDTO> statesDTO = dataBaseDAO.getParameterForTimeInterval(from, to, param);
+            DataGridSensors_fill(statesDTO);
         }
 
         private void DataGridSensors_fill(Dictionary<DateTime, double> data, Parameter param)
@@ -118,6 +121,15 @@ namespace KnowledgeBase
             DataGridSensors.ItemsSource = data;
             DataGridSensors.Columns[0].Header = "Measure time";
             DataGridSensors.Columns[1].Header = param.ToString();
+        }
+
+        private void DataGridSensors_fill(List<ObjectStateDTO> states)
+        {
+            DataGridSensors.Columns.Clear();
+            DataGridSensors.ItemsSource = states;
+            DataGridSensors.Columns[0].Header = "Measure time";
+            DataGridSensors.Columns[1].Header = states[0].parameterName.ToString();
+            DataGridSensors.Columns.Remove(DataGridSensors.Columns[2]);
         }
 
         private void DataGridSensors_fill(List<ObjectState> states)

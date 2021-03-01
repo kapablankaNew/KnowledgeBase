@@ -128,6 +128,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DAO\DataBaseDAO.cs" />
+    <Compile Include="DTO\ObjectStateDTO.cs" />
     <Compile Include="Entities\Control.cs" />
     <Compile Include="DAO\KnowledgeBaseDAO.cs" />
     <Compile Include="Entities\ObjectState.cs" />

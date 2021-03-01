@@ -1,4 +1,5 @@
-﻿using KnowledgeBase.Entities;
+﻿using KnowledgeBase.DTO;
+using KnowledgeBase.Entities;
 using Npgsql;
 using System;
 using System.Collections.Generic;
@@ -66,6 +67,30 @@ namespace KnowledgeBase.DAO
                 double T21 = double.Parse(entry["T21"].ToString());
                 double P2 = double.Parse(entry["P2"].ToString());
                 ObjectState state = new ObjectState(measureTime, Tnv, T1, P1, T11, T21, P2);
+                result.Add(state);
+            }
+            connection.Close();
+            return result;
+        }
+
+        public List<ObjectStateDTO> getParameterForTimeInterval(DateTime from, DateTime to, Parameter parameterName)
+        {
+            List<ObjectStateDTO> result = new List<ObjectStateDTO>();
+            connection.Open();
+            var create = new NpgsqlCommand("SELECT * FROM sensors " +
+            "WHERE \"measureTime\" > @from AND \"measureTime\" < @to " +
+            "ORDER BY \"measureTime\" DESC", connection);
+            create.Parameters.Add("from", NpgsqlTypes.NpgsqlDbType.Timestamp);
+            create.Parameters.Add("to", NpgsqlTypes.NpgsqlDbType.Timestamp);
+            create.Prepare();
+            create.Parameters[0].Value = from;
+            create.Parameters[1].Value = to;
+            var reader = create.ExecuteReader();
+            foreach (DbDataRecord entry in reader)
+            {
+                DateTime measureTime = (DateTime)entry["measureTime"];
+                double parameterValue = double.Parse(entry[parameterName.ToString()].ToString());
+                ObjectStateDTO state = new ObjectStateDTO(measureTime, parameterValue, parameterName);
                 result.Add(state);
             }
             connection.Close();
