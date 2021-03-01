@@ -33,5 +33,11 @@ namespace KnowledgeBase.Entities
             this.T21 = T21;
             this.P2 = P2;
         }
+
+        public double getParameter(Parameter param)
+        {
+            var property = typeof(ObjectState).GetProperty(param.ToString());
+            return (double)property.GetValue(this);
+        }
     }
 }

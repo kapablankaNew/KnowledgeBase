@@ -75,14 +75,17 @@ namespace KnowledgeBase
                 MessageBox.Show("Value 'from' must be less or equals than 'to'");
                 return;
             }
-            MessageBox.Show(from.ToString());
+
+            string parameterName = ((TextBlock)ComboBoxParameter.SelectedItem).Text;
+            Parameter param = (Parameter)Enum.Parse(typeof(Parameter), parameterName);
+
             List<ObjectState> states = dataBaseDAO.getDataForTimeInterval(from, to);
             Dictionary<DateTime, double> values = new Dictionary<DateTime, double>();
             foreach (var state in states)
             {
-                values[state.measureTime] = state.Tnv;
+                values[state.measureTime] = state.getParameter(param);
             }
-            DataGridSensors_fill(values, Parameter.Tnv);
+            DataGridSensors_fill(values, param);
         }
 
         private void DataGridSensors_fill(Dictionary<DateTime, double> data, Parameter param)

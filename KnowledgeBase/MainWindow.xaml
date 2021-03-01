@@ -29,7 +29,7 @@
 		<DataGrid x:Name="DataGridSensors" 
 				  HorizontalAlignment="Left" Height="238" 
 				  Margin="259,10,0,0" VerticalAlignment="Top" 
-				  Width="210" Loaded="DataGridSensors_Loaded"
+				  Width="217" Loaded="DataGridSensors_Loaded"
 				  AutoGenerateColumns="True"/>
 		<xctk:DateTimePicker x:Name="Picker_From" HorizontalAlignment="Left" Margin="570,46,0,0" 
 							 VerticalAlignment="Top" Height="28" Width="198" 
