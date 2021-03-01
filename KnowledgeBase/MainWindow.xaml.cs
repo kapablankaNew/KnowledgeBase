@@ -1,5 +1,6 @@
 ﻿using KnowledgeBase.DAO;
 using KnowledgeBase.Entities;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -75,11 +76,34 @@ namespace KnowledgeBase
                 MessageBox.Show("Value 'from' must be less or equals than 'to'");
                 return;
             }
-
-            string parameterName = ((TextBlock)ComboBoxParameter.SelectedItem).Text;
+            string parameterName;
+            try
+            {
+                TextBlock block = (TextBlock)ComboBoxParameter.SelectedItem;
+                parameterName = block.Text;
+            }
+            catch (NullReferenceException)
+            {
+                MessageBox.Show("Please, select parameter!");
+                return;
+            }
             Parameter param = (Parameter)Enum.Parse(typeof(Parameter), parameterName);
 
-            List<ObjectState> states = dataBaseDAO.getDataForTimeInterval(from, to);
+            List<ObjectState> states;
+            try
+            {
+                states = dataBaseDAO.getDataForTimeInterval(from, to);
+            }
+            catch (NpgsqlException ea)
+            {
+                MessageBox.Show("Attention! Error when working with database! " + ea.Message);
+                return;
+            }
+            if (states.Count == 0)
+            {
+                MessageBox.Show("No data available for selecting time interval!");
+                return;
+            }
             Dictionary<DateTime, double> values = new Dictionary<DateTime, double>();
             foreach (var state in states)
             {
