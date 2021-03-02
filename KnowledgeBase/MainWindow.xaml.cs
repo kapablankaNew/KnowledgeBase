@@ -60,6 +60,24 @@ namespace KnowledgeBase
             return result;
         }
 
+        private void buttonReconnect_Click(object sender, RoutedEventArgs e)
+        {
+            IniManager manager = new IniManager("../../configuration.ini");
+            var props = manager.getAllKeys("database");
+            var URL = props.Select(pr => pr + "=" + manager.ReadINI("database", pr)).
+                Aggregate((current, next) => current + ";" + next);
+            dataBaseDAO = new DataBaseDAO(URL);
+            try
+            {
+                dataBaseDAO.getDataForTimeInterval(new DateTime(), new DateTime());
+                MessageBox.Show("Reconnect successful!");
+            }
+            catch (NpgsqlException)
+            {
+                MessageBox.Show("Reconnect failed! Please, try again!");
+            }
+        }
+
         private void buttonGetData_Click(object sender, RoutedEventArgs e)
         {
             if (Picker_From.Value == null || Picker_To.Value == null)

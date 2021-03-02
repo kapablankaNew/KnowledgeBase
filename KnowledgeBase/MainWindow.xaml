@@ -69,5 +69,11 @@
 			<TextBlock>T21</TextBlock>
 			<TextBlock>P2</TextBlock>
 		</ComboBox>
+		<Button x:Name="button_Reconnect" 
+	  Content="Reconnect" 
+	  HorizontalAlignment="Left" 
+	  Margin="566,152,0,0" VerticalAlignment="Top" 
+	  Width="202" FontSize="16" 
+	  Click="buttonReconnect_Click"/>
 	</Grid>
 </Window>
