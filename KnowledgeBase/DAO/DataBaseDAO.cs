@@ -11,9 +11,7 @@ namespace KnowledgeBase.DAO
     {
         private DataBaseExecutor executor;
 
-        private string URL = @"Host=localhost;Username=postgres;Password=postgres;Database=knowledgebase";
-
-        public DataBaseDAO()
+        public DataBaseDAO(string URL)
         {
             NpgsqlConnection connection = new NpgsqlConnection(URL);
             executor = new DataBaseExecutor(connection);

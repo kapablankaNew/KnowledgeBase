@@ -4,6 +4,9 @@ using KnowledgeBase.Entities;
 using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -21,13 +24,17 @@ namespace KnowledgeBase
             InitializeComponent();
             knowledgeBaseDAO = new KnowledgeBaseDAO();
             knowledgeBaseDAO.loadData("../../resources/knowledgeBase.n3");
-            dataBaseDAO = new DataBaseDAO();
             List<Process> highLevel = knowledgeBaseDAO.getHighLevel();
             foreach (Process process in highLevel)
             {
                 TreeViewItem tree = getTree(process);
                 KnowlegdeTree.Items.Add(tree);
             }
+            IniManager manager = new IniManager("../../configuration.ini");
+            var props = manager.getAllKeys("database");
+            var URL = props.Select(pr => pr + "=" + manager.ReadINI("database", pr)).
+                Aggregate((current, next) => current + ";" + next);
+            dataBaseDAO = new DataBaseDAO(URL);
         }
 
         private void TreeViewItem_Selected(object sender, RoutedEventArgs e)

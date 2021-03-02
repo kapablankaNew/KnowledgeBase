@@ -133,6 +133,7 @@
     <Compile Include="DAO\KnowledgeBaseDAO.cs" />
     <Compile Include="Entities\ObjectState.cs" />
     <Compile Include="Executor\DataBaseExecutor.cs" />
+    <Compile Include="IniManager.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
