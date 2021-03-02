@@ -13,8 +13,15 @@ namespace KnowledgeBase.DAO
 
         public DataBaseDAO(string URL)
         {
-            NpgsqlConnection connection = new NpgsqlConnection(URL);
-            executor = new DataBaseExecutor(connection);
+            try
+            {
+                NpgsqlConnection connection = new NpgsqlConnection(URL);
+                executor = new DataBaseExecutor(connection);
+            }
+            catch (ArgumentException)
+            {
+                throw new NpgsqlException("Error when connecting to the database!");
+            }
         }
 
         public List<ObjectState> getDataForTimeInterval(DateTime from, DateTime to)

@@ -32,9 +32,25 @@ namespace KnowledgeBase
             }
             IniManager manager = new IniManager("../../configuration.ini");
             var props = manager.getAllKeys("database");
-            var URL = props.Select(pr => pr + "=" + manager.ReadINI("database", pr)).
+            try
+            {
+                var URL = props.Select(pr => pr + "=" + manager.ReadINI("database", pr)).
                 Aggregate((current, next) => current + ";" + next);
-            dataBaseDAO = new DataBaseDAO(URL);
+                dataBaseDAO = new DataBaseDAO(URL);
+                dataBaseDAO.getDataForTimeInterval(new DateTime(), new DateTime());
+            }
+            catch (InvalidOperationException)
+            {
+                MessageBox.Show("File not found! Please, try again");
+                buttonGetData.IsEnabled = false;
+            }
+            catch (NpgsqlException)
+            {
+                MessageBox.Show("Attention! Error when connecting to the database!"
+                    + "Please, check parameters in the configuration file "
+                    + "(configuration.ini) and try again");
+                buttonGetData.IsEnabled = false;
+            }
         }
 
         private void TreeViewItem_Selected(object sender, RoutedEventArgs e)
@@ -65,15 +81,22 @@ namespace KnowledgeBase
             IniManager manager = new IniManager("../../configuration.ini");
             var props = manager.getAllKeys("database");
             var URL = props.Select(pr => pr + "=" + manager.ReadINI("database", pr)).
-                Aggregate((current, next) => current + ";" + next);
-            dataBaseDAO = new DataBaseDAO(URL);
+                Aggregate((current, next) => current + ";" + next);           
             try
             {
+                dataBaseDAO = new DataBaseDAO(URL);
                 dataBaseDAO.getDataForTimeInterval(new DateTime(), new DateTime());
                 MessageBox.Show("Reconnect successful!");
+                buttonGetData.IsEnabled = true;
+            }
+            catch (InvalidOperationException)
+            {
+                MessageBox.Show("File not found! Please, try again");
+                buttonGetData.IsEnabled = false;
             }
             catch (NpgsqlException)
             {
+                buttonGetData.IsEnabled = false;
                 MessageBox.Show("Reconnect failed! Please, try again!");
             }
         }
