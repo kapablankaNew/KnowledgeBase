@@ -1,13 +1,11 @@
-﻿using System;
+﻿using KnowledgeBase.Entities;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VDS.RDF;
 using VDS.RDF.Parsing;
 using VDS.RDF.Query;
 
-namespace KnowledgeBase
+namespace KnowledgeBase.DAO
 {
     //special class for getting data from the knowledge base
     //this class is abstraction layer between the program and the knowledge base

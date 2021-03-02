@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using KnowledgeBase;
+using KnowledgeBase.DAO;
+using KnowledgeBase.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace KnowledgeBaseTests

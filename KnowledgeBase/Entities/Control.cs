@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VDS.RDF;
 
-namespace KnowledgeBase
+namespace KnowledgeBase.Entities
 {
     public class Control
     {
