@@ -80,8 +80,7 @@ namespace KnowledgeBase
             string parameterName;
             try
             {
-                TextBlock block = (TextBlock)ComboBoxParameter.SelectedItem;
-                parameterName = block.Text;
+                parameterName = ((TextBlock)ComboBoxParameter.SelectedItem).Text;
             }
             catch (NullReferenceException)
             {
@@ -89,11 +88,10 @@ namespace KnowledgeBase
                 return;
             }
             Parameter param = (Parameter)Enum.Parse(typeof(Parameter), parameterName);
-
-            List<ObjectState> states;
+            List<ObjectStateDTO> states;
             try
             {
-                states = dataBaseDAO.getDataForTimeInterval(from, to);
+                states = dataBaseDAO.getParameterForTimeInterval(from, to, param);
             }
             catch (NpgsqlException ea)
             {
@@ -105,22 +103,7 @@ namespace KnowledgeBase
                 MessageBox.Show("No data available for selecting time interval!");
                 return;
             }
-            Dictionary<DateTime, double> values = new Dictionary<DateTime, double>();
-            foreach (var state in states)
-            {
-                values[state.measureTime] = state.getParameter(param);
-            }
-            //DataGridSensors_fill(values, param);
-            List<ObjectStateDTO> statesDTO = dataBaseDAO.getParameterForTimeInterval(from, to, param);
-            DataGridSensors_fill(statesDTO);
-        }
-
-        private void DataGridSensors_fill(Dictionary<DateTime, double> data, Parameter param)
-        {
-            DataGridSensors.Columns.Clear();
-            DataGridSensors.ItemsSource = data;
-            DataGridSensors.Columns[0].Header = "Measure time";
-            DataGridSensors.Columns[1].Header = param.ToString();
+            DataGridSensors_fill(states);
         }
 
         private void DataGridSensors_fill(List<ObjectStateDTO> states)
@@ -130,12 +113,6 @@ namespace KnowledgeBase
             DataGridSensors.Columns[0].Header = "Measure time";
             DataGridSensors.Columns[1].Header = states[0].parameterName.ToString();
             DataGridSensors.Columns.Remove(DataGridSensors.Columns[2]);
-        }
-
-        private void DataGridSensors_fill(List<ObjectState> states)
-        {
-            DataGridSensors.Columns.Clear();
-            DataGridSensors.ItemsSource = states;
         }
 
         private void DataGridSensors_Loaded(object sender, RoutedEventArgs e)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KnowledgeBase.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,10 +35,15 @@ namespace KnowledgeBase.Entities
             this.P2 = P2;
         }
 
-        public double getParameter(Parameter param)
+        public double getParameterValue(Parameter param)
         {
             var property = typeof(ObjectState).GetProperty(param.ToString());
             return (double)property.GetValue(this);
+        }
+
+        public ObjectStateDTO convertToDTO(Parameter parameterName)
+        {
+            return new ObjectStateDTO(measureTime, getParameterValue(parameterName), parameterName);
         }
     }
 }
