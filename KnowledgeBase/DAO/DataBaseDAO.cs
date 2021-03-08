@@ -62,5 +62,27 @@ namespace KnowledgeBase.DAO
             }
             return result;
         }
+
+        public void writeData(ObjectState state) {
+            var adding = new NpgsqlCommand("INSERT INTO sensors VALUES(@measureTime, " +
+                "@Tnv, @T1, @P1, @T11, @T21, @P2");
+            adding.Parameters.Add("measureTime", NpgsqlTypes.NpgsqlDbType.Timestamp);
+            adding.Parameters.Add("Tnv", NpgsqlTypes.NpgsqlDbType.Real);
+            adding.Parameters.Add("T1", NpgsqlTypes.NpgsqlDbType.Real);
+            adding.Parameters.Add("P1", NpgsqlTypes.NpgsqlDbType.Real);
+            adding.Parameters.Add("T11", NpgsqlTypes.NpgsqlDbType.Real);
+            adding.Parameters.Add("T21", NpgsqlTypes.NpgsqlDbType.Real);
+            adding.Parameters.Add("P2", NpgsqlTypes.NpgsqlDbType.Real);
+
+            adding.Parameters[0].Value = state.measureTime;
+            adding.Parameters[1].Value = state.Tnv;
+            adding.Parameters[2].Value = state.T1;
+            adding.Parameters[3].Value = state.P1;
+            adding.Parameters[4].Value = state.T11;
+            adding.Parameters[5].Value = state.T21;
+            adding.Parameters[6].Value = state.P2;
+
+            executor.execUpdate(adding);
+        }
     }
 }
