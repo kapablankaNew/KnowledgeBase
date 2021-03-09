@@ -4,11 +4,16 @@ using KnowledgeBase.Executor;
 using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace KnowledgeBase.DAO
 {
     class DataBaseDAO
     {
+        public delegate void DataBaseHandler(object sender, NpgsqlNotificationEventArgs e);
+
+        public event DataBaseHandler dataBaseUpdate;
+
         private DataBaseExecutor executor;
 
         public DataBaseDAO(string URL)
@@ -17,11 +22,29 @@ namespace KnowledgeBase.DAO
             {
                 NpgsqlConnection connection = new NpgsqlConnection(URL);
                 executor = new DataBaseExecutor(connection);
+
+                NpgsqlConnection connectionListen = new NpgsqlConnection(URL);
+                connectionListen.Open();
+                connectionListen.Notification += listenNotification;
+                var listen = new NpgsqlCommand("Listen virtual", connectionListen);
+                listen.ExecuteNonQuery();
+                Thread threadListener = new Thread(() => {
+                    while (true)
+                    {
+                        connectionListen.Wait();
+                    }
+                });
+                threadListener.Start();
             }
             catch (ArgumentException)
             {
                 throw new NpgsqlException("Error when connecting to the database!");
             }
+        }
+
+        private void listenNotification(object sender, NpgsqlNotificationEventArgs e)
+        {
+            dataBaseUpdate.Invoke(sender, e);
         }
 
         public List<ObjectState> getDataForTimeInterval(DateTime from, DateTime to, string table = "sensors")

@@ -17,7 +17,9 @@ namespace KnowledgeBase
     {
         private KnowledgeBaseDAO knowledgeBaseDAO { get; set; }
 
-        private DataBaseDAO dataBaseDAO { get; set; }
+        private DataBaseDAO mainDataBaseDAO { get; set; }
+
+        private DataBaseDAO additionalDataBaseDAO { get; set; }
 
         public MainWindow()
         {
@@ -31,26 +33,32 @@ namespace KnowledgeBase
                 KnowlegdeTree.Items.Add(tree);
             }
             IniManager manager = new IniManager("../../configuration.ini");
-            var props = manager.getAllKeys("database");
+            var props = manager.getAllKeys("databaseMain");
             try
             {
-                var URL = props.Select(pr => pr + "=" + manager.ReadINI("database", pr)).
+                var URL = props.Select(pr => pr + "=" + manager.ReadINI("databaseMain", pr)).
                 Aggregate((current, next) => current + ";" + next);
-                dataBaseDAO = new DataBaseDAO(URL);
-                dataBaseDAO.getDataForTimeInterval(new DateTime(), new DateTime());
+                mainDataBaseDAO = new DataBaseDAO(URL);
+                mainDataBaseDAO.getDataForTimeInterval(new DateTime(), new DateTime());
+                props = manager.getAllKeys("databaseAdditional");
+                URL = props.Select(pr => pr + "=" + manager.ReadINI("databaseAdditional", pr)).
+                Aggregate((current, next) => current + ";" + next);
+                additionalDataBaseDAO = new DataBaseDAO(URL);
+                additionalDataBaseDAO.getDataForTimeInterval(new DateTime(), new DateTime());
+                additionalDataBaseDAO.dataBaseUpdate += listenNotification;
             }
             catch (InvalidOperationException)
             {
                 MessageBox.Show("File not found! Please, try again");
                 buttonGetData.IsEnabled = false;
             }
-            catch (NpgsqlException)
-            {
-                MessageBox.Show("Attention! Error when connecting to the database!"
-                    + "Please, check parameters in the configuration file "
-                    + "(configuration.ini) and try again");
-                buttonGetData.IsEnabled = false;
-            }
+            //catch (NpgsqlException)
+            //{
+            //    MessageBox.Show("Attention! Error when connecting to the database!"
+            //        + "Please, check parameters in the configuration file "
+            //        + "(configuration.ini) and try again");
+            //    buttonGetData.IsEnabled = false;
+            //}
         }
 
         private void TreeViewItem_Selected(object sender, RoutedEventArgs e)
@@ -79,15 +87,20 @@ namespace KnowledgeBase
         private void buttonReconnect_Click(object sender, RoutedEventArgs e)
         {
             IniManager manager = new IniManager("../../configuration.ini");
-            var props = manager.getAllKeys("database");
-            var URL = props.Select(pr => pr + "=" + manager.ReadINI("database", pr)).
+            var props = manager.getAllKeys("databaseMain");
+            var URL = props.Select(pr => pr + "=" + manager.ReadINI("databaseMain", pr)).
                 Aggregate((current, next) => current + ";" + next);           
             try
             {
-                dataBaseDAO = new DataBaseDAO(URL);
-                dataBaseDAO.getDataForTimeInterval(new DateTime(), new DateTime());
-                MessageBox.Show("Reconnect successful!");
+                mainDataBaseDAO = new DataBaseDAO(URL);
+                mainDataBaseDAO.getDataForTimeInterval(new DateTime(), new DateTime());
                 buttonGetData.IsEnabled = true;
+                URL = props.Select(pr => pr + "=" + manager.ReadINI("databaseAdditional", pr)).
+                Aggregate((current, next) => current + ";" + next);
+                additionalDataBaseDAO = new DataBaseDAO(URL);
+                additionalDataBaseDAO.getDataForTimeInterval(new DateTime(), new DateTime());
+                additionalDataBaseDAO.dataBaseUpdate += listenNotification;
+                MessageBox.Show("Reconnect successful!");
             }
             catch (InvalidOperationException)
             {
@@ -129,7 +142,7 @@ namespace KnowledgeBase
             List<ObjectStateDTO> states;
             try
             {
-                states = dataBaseDAO.getParameterForTimeInterval(from, to, param);
+                states = mainDataBaseDAO.getParameterForTimeInterval(from, to, param);
             }
             catch (NpgsqlException ea)
             {
@@ -156,6 +169,11 @@ namespace KnowledgeBase
         private void DataGridSensors_Loaded(object sender, RoutedEventArgs e)
         {
             DataGridSensors.Columns.Clear();
+        }
+
+        public void listenNotification(object sender, NpgsqlNotificationEventArgs e)
+        {
+            MessageBox.Show(e.Payload);
         }
     }
 }
