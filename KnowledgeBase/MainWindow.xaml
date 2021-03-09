@@ -75,5 +75,7 @@
 	  Margin="566,152,0,0" VerticalAlignment="Top" 
 	  Width="202" FontSize="16" 
 	  Click="buttonReconnect_Click"/>
+		<TextBox x:Name="textBox_rewrite" HorizontalAlignment="Left" Height="189" Margin="484,210,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="284" FontSize="16"/>
+		<Label Content="Rewrite" HorizontalAlignment="Left" Margin="484,179,0,0" VerticalAlignment="Top" FontSize="16"/>
 	</Grid>
 </Window>

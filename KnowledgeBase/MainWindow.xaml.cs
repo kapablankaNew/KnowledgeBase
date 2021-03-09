@@ -52,13 +52,13 @@ namespace KnowledgeBase
                 MessageBox.Show("File not found! Please, try again");
                 buttonGetData.IsEnabled = false;
             }
-            //catch (NpgsqlException)
-            //{
-            //    MessageBox.Show("Attention! Error when connecting to the database!"
-            //        + "Please, check parameters in the configuration file "
-            //        + "(configuration.ini) and try again");
-            //    buttonGetData.IsEnabled = false;
-            //}
+            catch (NpgsqlException)
+            {
+                MessageBox.Show("Attention! Error when connecting to the database!"
+                    + "Please, check parameters in the configuration file "
+                    + "(configuration.ini) and try again");
+                buttonGetData.IsEnabled = false;
+            }
         }
 
         private void TreeViewItem_Selected(object sender, RoutedEventArgs e)
@@ -173,7 +173,10 @@ namespace KnowledgeBase
 
         public void listenNotification(object sender, NpgsqlNotificationEventArgs e)
         {
-            MessageBox.Show(e.Payload);
+            ObjectState state = additionalDataBaseDAO.getLastStates()[0];
+            string text = state.ToString();
+            Dispatcher.Invoke(() => textBox_rewrite.Text = text);
+            mainDataBaseDAO.writeData(state);
         }
     }
 }

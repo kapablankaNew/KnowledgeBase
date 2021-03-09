@@ -1,5 +1,6 @@
 ﻿using KnowledgeBase.DTO;
 using System;
+using System.Text;
 
 namespace KnowledgeBase.Entities
 {
@@ -40,6 +41,15 @@ namespace KnowledgeBase.Entities
         public ObjectStateDTO convertToDTO(Parameter parameterName)
         {
             return new ObjectStateDTO(measureTime, getParameterValue(parameterName), parameterName);
+        }
+
+        public override string ToString()
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append("Measure time: " + measureTime + ",\nTnv: " + Tnv + ",\n");
+            builder.Append("T1: " + T1 + ",\nP1:" + P1 + ",\nT11:" + T11 + ",\n");
+            builder.Append("T21: " + T21 + ",\nP2:" + P2);
+            return builder.ToString();
         }
     }
 }

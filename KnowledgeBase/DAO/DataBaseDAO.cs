@@ -86,7 +86,7 @@ namespace KnowledgeBase.DAO
             return result;
         }
 
-        public ObjectState getLastStates(int number = 1, string table = "sensors") 
+        public List<ObjectState> getLastStates(int number = 1, string table = "sensors") 
         {
             var getting = new NpgsqlCommand("SELECT * FROM " + table + " " +
                 "ORDER BY \"measureTime\" DESC LIMIT " + number);
@@ -103,13 +103,13 @@ namespace KnowledgeBase.DAO
                     return state;
                 });
 
-            return result[0];
+            return result;
         }
 
         public void writeData(ObjectState state, string table = "sensors") 
         {
-            var adding = new NpgsqlCommand("INSERT INTO " + table + " VALUES(@measureTime, " +
-                "@Tnv, @T1, @P1, @T11, @T21, @P2");
+            var adding = new NpgsqlCommand("INSERT INTO " + table + " VALUES (@measureTime, " +
+                "@Tnv, @T1, @P1, @T11, @T21, @P2)");
             adding.Parameters.Add("measureTime", NpgsqlTypes.NpgsqlDbType.Timestamp);
             adding.Parameters.Add("Tnv", NpgsqlTypes.NpgsqlDbType.Real);
             adding.Parameters.Add("T1", NpgsqlTypes.NpgsqlDbType.Real);
