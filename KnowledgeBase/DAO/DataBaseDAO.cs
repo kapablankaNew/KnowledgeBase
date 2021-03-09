@@ -24,10 +24,10 @@ namespace KnowledgeBase.DAO
             }
         }
 
-        public List<ObjectState> getDataForTimeInterval(DateTime from, DateTime to)
+        public List<ObjectState> getDataForTimeInterval(DateTime from, DateTime to, string table = "sensors")
         {
             List<ObjectState> result = new List<ObjectState>();
-            var create = new NpgsqlCommand("SELECT * FROM sensors " +
+            var create = new NpgsqlCommand("SELECT * FROM " + table + " " +
             "WHERE \"measureTime\" > @from AND \"measureTime\" < @to " +
             "ORDER BY \"measureTime\" DESC");
             create.Parameters.Add("from", NpgsqlTypes.NpgsqlDbType.Timestamp);
@@ -51,11 +51,11 @@ namespace KnowledgeBase.DAO
             return result;
         }
 
-        public List<ObjectStateDTO> getParameterForTimeInterval(DateTime from, DateTime to, Parameter parameterName)
+        public List<ObjectStateDTO> getParameterForTimeInterval(DateTime from, DateTime to, Parameter parameterName, string table = "sensors")
         {
             List<ObjectStateDTO> result = new List<ObjectStateDTO>();
 
-            List<ObjectState> states = getDataForTimeInterval(from, to);
+            List<ObjectState> states = getDataForTimeInterval(from, to, table);
             foreach (var state in states)
             {
                 result.Add(state.convertToDTO(parameterName));
@@ -63,8 +63,29 @@ namespace KnowledgeBase.DAO
             return result;
         }
 
-        public void writeData(ObjectState state) {
-            var adding = new NpgsqlCommand("INSERT INTO sensors VALUES(@measureTime, " +
+        public ObjectState getLastStates(int number = 1, string table = "sensors") 
+        {
+            var getting = new NpgsqlCommand("SELECT * FROM " + table + " " +
+                "ORDER BY \"measureTime\" DESC LIMIT " + number);
+
+            List<ObjectState> result = executor.execQuery(getting,
+                entry => {
+                    ObjectState state = new ObjectState((DateTime)entry["measureTime"],
+                        double.Parse(entry["Tnv"].ToString()),
+                        double.Parse(entry["T1"].ToString()),
+                        double.Parse(entry["P1"].ToString()),
+                        double.Parse(entry["T11"].ToString()),
+                        double.Parse(entry["T21"].ToString()),
+                        double.Parse(entry["P2"].ToString()));
+                    return state;
+                });
+
+            return result[0];
+        }
+
+        public void writeData(ObjectState state, string table = "sensors") 
+        {
+            var adding = new NpgsqlCommand("INSERT INTO " + table + " VALUES(@measureTime, " +
                 "@Tnv, @T1, @P1, @T11, @T21, @P2");
             adding.Parameters.Add("measureTime", NpgsqlTypes.NpgsqlDbType.Timestamp);
             adding.Parameters.Add("Tnv", NpgsqlTypes.NpgsqlDbType.Real);
